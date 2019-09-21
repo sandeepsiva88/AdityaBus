@@ -1,0 +1,845 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='description', content='')
+    meta(name='author', content='Dashboard')
+    meta(name='keyword', content='Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina')
+    title Bus Tracking
+    link(type='image/png', href='images/bus1.png', rel='icon')
+    // Bootstrap core CSS
+    link(rel='stylesheet', href='stylesheets/bootstrap.min.css')
+    script(src='javascripts/jquery-1.11.1.min.js')
+    script(src='javascripts/bootstrap.min.js')
+    // external css
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    // Custom styles for this template
+    link(href='stylesheets/style.css', rel='stylesheet')
+    link(href='stylesheets/style-responsive.css', rel='stylesheet')
+    // Data tables CSS
+    link(rel='stylesheet', type='text/css', href='stylesheets/buttons.dataTables.min.css')
+    link(rel='stylesheet', type='text/css', href='stylesheets/jquery.dataTables.min.css')    
+    link(href='stylesheets/dataTables.bootstrap.css', rel='stylesheet')
+    //Date Picker
+    link(href='stylesheets/jquery-ui.css', rel='stylesheet')
+    link(href='stylesheets/date.css', rel='stylesheet')
+    //Page script
+    script(src='javascripts/route.js')
+    style.
+      .header, #sidebar {
+      background: #2C3E50;
+      }
+      span {
+      font-size: 14px;
+      }
+      .file-uploader {
+      background-color: #dbefe9;
+      border-radius: 3px;
+      color: #242424;
+      }
+      .file-uploader__message-area {
+      font-size: 18px;
+      padding: 1em;
+      text-align: center;
+      color: #377a65;
+      }
+      .file-list {
+      background-color: white;
+      font-size: 16px;
+      }
+      .file-list__name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      }
+      .file-list li {
+      height: 50px;
+      line-height: 50px;
+      margin-left: .5em;
+      border: none;
+      overflow: hidden;
+      }
+      .removal-button {
+      width: 20%;
+      border: none;
+      background-color: #d65d38;
+      color: white;
+      }
+      .removal-button::before {
+      content: "X";
+      }
+      .removal-button:focus {
+      outline: 0;
+      }
+      .file-chooser {
+      padding: 1em;
+      transition: background-color 1s, height 1s;
+      }
+      .file-chooser p {
+      font-size: 18px;
+      padding-top: 1em;
+      }
+      .file-uploader {
+      max-width: 400px;
+      height: auto;
+      margin: 2em auto;
+      }
+      .file-uploader * {
+      display: block;
+      }
+      .file-uploader input[type=submit] {
+      margin-top: 2em;
+      float: right;
+      }
+      .file-list {
+      margin: 0 auto;
+      max-width: 90%;
+      }
+      .file-list__name {
+      max-width: 70%;
+      float: left;
+      }
+      .removal-button {
+      display: inline-block;
+      height: 100%;
+      float: right;
+      }
+      .file-chooser {
+      width: 90%;
+      margin: .5em auto;
+      }
+      .file-chooser__input {
+      margin: 0 auto;
+      }
+      .file-uploader__submit-button {
+      width: 100%;
+      border: none;
+      font-size: 1.5em;
+      padding: 1em;
+      background-color: #72bfa7;
+      color: white;
+      }
+      .file-uploader__submit-button:hover {
+      background-color: #a7d7c8;
+      }
+      .file-list li:after, .file-uploader:after {
+      content: "";
+      display: table;
+      clear: both;
+      }
+      .hidden {
+      display: none;
+      }
+      .hidden input {
+      display: none;
+      }
+      .error {
+      background-color: #d65d38;
+      color: white;
+      }
+      *, *::before, *::after {
+      box-sizing: border-box;
+      }
+      ul, li {
+      margin: 0;
+      padding: 0;
+      }
+      .personal_details {
+      background-color: white;
+      border-left:4px solid #fd9f1b;
+      }
+      .personal_details h3 {
+      padding: 10px;
+      }
+      #name {
+      color: #B4886B;
+      font-weight: bold;
+      float: left;
+      margin-left:20px;
+      font-size:15px;
+      }
+      #wd
+      {
+      margin-left: 10px;
+      font-weight: bold;
+      font-family: Arial;
+      }
+      .panel-box {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+      height: 150px;
+      text-align: center;
+      border: medium none;
+      box-shadow: 10px 10px 10px;
+      }
+      .bg-success {
+      background-color: #A3C86D !important;
+      color: #FFF !important;
+      }
+      .bg-warning {
+      background-color: orange !important;
+      color: #FFF !important;
+      }
+      .bg-light {
+      background-color: lightblue !important;
+      color: #FFF !important;
+      }
+      .bg-lightgreen {
+      background-color: lightgreen !important;
+      color: #FFF !important;
+      }
+      .bg-default {
+      background-color: grey !important;
+      color: #FFF !important;
+      }
+      .bg-pink {
+      background-color: pink !important;
+      color: #FFF !important;
+      }
+      .bg-tomato {
+      background-color: tomato !important;
+      color: #FFF !important;
+      }
+      .bg-dodgerblue {
+      background-color: dodgerblue !important;
+      color: #FFF !important;
+      }
+      .bg-violet {
+      background-color: violet !important;
+      color: #FFF !important;
+      }
+      .success-text {
+      color: #82b33a;
+      }
+      .bg-danger {
+      background-color: #FF7857 !important;
+      color: #FFF !important;
+      }
+      .danger-text {
+      color: #d15b3d;
+      }
+      
+      .panel-box .panel-icon {
+      display: table-cell;
+      padding: px;
+      width: 1%;
+      vertical-align: top;
+      border-radius: 0px;
+      text-align: center;
+      }
+      .panel-box .size-h1 {
+      margin-top:7px;
+      }
+      .panel-box .fa {
+      margin-top:9px;
+      }
+      .bg-lovender {
+      background-color: #8075C4 !important;
+      color: #FFF !important;
+      }
+      .lovender-text {
+      color: #6a5fb1;
+      }
+      .tab {
+          overflow: scroll;
+          border: 1px solid #ccc;
+          background-color: skyblue;
+          color:white;
+      }
+      .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          width:100%;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+          border-left:1px solid #ccc;
+      }
+      .tab button:hover {
+          background-color: white;
+          color:skyblue;
+          font-weight:bold;
+      }
+      .tab button:focus {
+          background-color: white;
+          color:skyblue;
+          font-weight:bold;
+      }
+
+      .tab .active button {
+          background-color: white;
+          color:skyblue;
+          font-weight:bold;
+      }
+      .dontshow{
+      display:none;
+      }
+  body
+    section#container
+      // header start
+      header.header.black-bg
+        .sidebar-toggle-box
+          .fa.fa-bars.tooltips(data-placement='right', data-original-title='Toggle Navigation')
+        // logo start
+        a.logo(href='#')
+          b
+            img(src='images/myhub_logo.png',style='height:55px;width:100px;margin-top:-13px')
+        // logo end
+        .top-menu
+          ul.nav.pull-right.top-menu
+            li
+              a.logout(href='logout') Logout
+      // header end
+      // sidebar start
+      aside
+        #sidebar.nav-collapse
+          // sidebar menu start
+          ul#nav-accordion.sidebar-menu
+            p.centered
+              a(href='#')
+                img.img-circle(src='images/bus.png', width='80')
+            h5.centered 
+              p Bus Tracking
+            li.active
+              a(data-toggle='tab', href='#home')
+                i.fa.fa-home
+                span Home
+            li.sub-menu
+              a(data-toggle='tab', href='#town')
+                i.fa.fa-university
+                span Strength
+            li.sub-menu
+              a(data-toggle='tab', href='#list')
+                i.fa.fa-list
+                span List
+            li.sub-menu
+              a(data-toggle='tab', href='#report')
+                i.fa.fa-bars
+                span Generate Report
+            -var role=user.Role
+            -if(role=='Admin'){
+              li.sub-menu
+                a(data-toggle='tab', href='#add')
+                  i.fa.fa-plus
+                  span Add Bus
+            -}
+            -var role=user.Role
+            -if(role=='Admin'){
+              li.sub-menu
+                a(data-toggle='tab', href='#upload')
+                  i.fa.fa-upload
+                  span Upload Data
+            -}
+          // sidebar menu end
+      // sidebar end
+      // main content start
+      section#main-content
+        section.wrapper.site-min-height
+          .row.mt
+            .col-lg-12
+              .tab-content
+                #home.tab-pane.fade.in.active
+                  .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')  
+                    br
+                    br
+                    center
+                      .row
+                        .well
+                          #printDate.date
+                          #printDay.date
+                          #printTime.date
+                      .row.dashboard-stats.container
+                        .col-md-6.col-sm-6.col-lg-6
+                          section.panel.panel-box
+                            .panel-left.panel-icon.bg-success
+      
+                              h1(style="margin-top:50px") IN
+                            .panel-right.panel-icon.bg-reverse
+                              p.text-muted.no-margin.text
+                                span 
+                              h1(style="margin-top:50px") #{indata}
+                        .col-md-6.col-sm-6.col-lg-6
+                          section.panel.panel-box
+                            .panel-left.panel-icon.bg-warning
+      
+                              h1(style="margin-top:50px") OUT
+                            .panel-right.panel-icon.bg-reverse
+                              p.text-muted.no-margin.text
+                                span 
+                              h1(style="margin-top:50px") #{outdata}
+                    .row 
+                      br   
+                      .col-lg-12
+                        .panel.panel-default
+                          .panel-body
+                            .table-responsive
+                              table.dataTables-example.table.table-striped.table-bordered.table-hover
+                                thead
+                                  tr
+                                    th Bus No
+                                    th status
+                                    th Date
+                                    th Time
+                                tbody
+                                  each day in daywise
+                                    tr
+                                      td #{day.BusNo}
+                                      td #{day.Status}
+                                      td #{day.Date}
+                                      td #{day.Time}
+                #list.tab-pane.fade.align
+                  .row
+                    .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')        
+                      .row 
+                        .col-lg-12
+                          br   
+                          br
+                          button.btn.btn-primary.edit1(type="button") edit
+                          br
+                          br
+                          .panel.panel-default
+                            .panel-body
+                              .table-responsive
+                                table.dataTables-example.table.table-striped.table-bordered.table-hover(style='width:100%')
+                                  thead
+                                    tr
+                                      th Bus No
+                                      th Town
+                                      th Route
+                                      th Code
+                                      th Model
+                                      th Capacity
+                                      th Strength
+                                      th Standing
+                                      th Intime
+                                      th Remarks
+                                      th Action
+                                  tbody
+                                    each rout in route
+                                      
+                                      tr
+                                        td #{rout.BusNo}  
+                                        td #{rout.Town}
+                                        td.col5 #{rout.Route} 
+                                        td #{rout.Code}
+                                        td #{rout.Model}
+                                        td #{rout.Capacity}
+                                        td.col #{rout.Strength}
+                                        td.col2 #{rout.Standing}
+                                        td.col3 #{rout.Intime}
+                                        td.col4 #{rout.Remarks}
+                                        td 
+                                          button.btn.btn-primary.updata(type="button", value=rout._id, style="display:none") save
+                #town.tab-pane.fade.align
+                  ul.nav.nav-tabs.nav-justified.tab
+                    li.active
+                      button(data-toggle='pill', href='#kkd') Kakinada
+                    li
+                      button(data-toggle='pill', href='#rjy') Rajahmundry
+                    li
+                      button(data-toggle='pill', href='#mdp') Mandapeta
+                    li
+                      button(data-toggle='pill', href='#others') Others
+                  .tab-content
+                    #kkd.tab-pane.fade.in.active
+                      .col-lg-12
+                      // Advanced Tables
+                      .panel.panel-default
+                        .panel-body
+                          form(action="/insertdata", method="post")
+                            .table-responsive
+                              table.table.table-striped.table-bordered.table-hover
+                                thead
+                                  tr
+                                    th Bus No
+                                    th Town
+                                    th Route
+                                    th Code
+                                    th Model
+                                    th Capacity
+                                    th Strength
+                                    th Standing
+                                    th Date
+                                    th Intime
+                                    th Remarks
+                                tbody 
+                                  each kakinada in Kakinda
+                                 
+                                    tr
+                                      td 
+                                        input(type="text", name="busno", value=kakinada.BusNo, readonly)  
+                                      td 
+                                        input(type="text", name="town", value=kakinada.Town, readonly)  
+                                      td
+                                        input(type="text", name="route", value=kakinada.Route) 
+                                      td
+                                        input(type="text", name="code", value=kakinada.Code, readonly)
+                                      td
+                                        input(type="text", name="model", value=kakinada.Model, readonly)
+                                      td
+                                        input(type="text", name="capacity", value=kakinada.Capacity, readonly)
+                                      td
+                                        input(type="text", name="strength") 
+                                      td
+                                        input(type="text", name="standing")
+                                      td
+                                        input(type="text", name="date", value=kakinada.Date)    
+                                      td
+                                        input(type="text", name="intime", value=kakinada.Intime)
+                                      td
+                                        input(type="text", name="remarks")
+                              input.btn.btn-info(type="submit", value="sumbit")
+                              input.btn.btn-warning(type="reset", value="reset" style="margin-left:20px")
+                    #rjy.tab-pane.fade.align
+                      .col-lg-12
+                      // Advanced Tables
+                      .panel.panel-default
+                        .panel-body
+                          form(action="/insert-rajahmundry-data", method="post")
+                            .table-responsive
+                              table.table.table-striped.table-bordered.table-hover
+                                thead
+                                  tr
+                                    th Bus No
+                                    th Town
+                                    th Route
+                                    th Code
+                                    th Model
+                                    th Capacity
+                                    th Strength
+                                    th Standing
+                                    th Date
+                                    th Intime
+                                    th Remarks
+                                tbody
+                                  each rajahmundry in Rajahmundry
+                              
+                                    tr
+                                      td 
+                                        input(type="text", name="busno", value=rajahmundry.BusNo, readonly)  
+                                      td 
+                                        input(type="text", name="town", value=rajahmundry.Town, readonly)
+                                      td
+                                        input(type="text", name="route", value=rajahmundry.Route) 
+                                      td
+                                        input(type="text", name="code", value=rajahmundry.Code, readonly)
+                                      td 
+                                        input(type="text", name="model", value=rajahmundry.Model, readonly)  
+                                      td
+                                        input(type="text", name="capacity", value=rajahmundry.Capacity, readonly) 
+                                      td
+                                        input(type="text", name="strength") 
+                                      td
+                                        input(type="text", name="standing")  
+                                      td
+                                        input(type="text", name="date", value=rajahmundry.Date)  
+                                      td
+                                        input(type="text", name="intime", value=rajahmundry.Intime)
+                                      td
+                                        input(type="text", name="remarks")
+                              input(type="submit").btn.btn-info 
+                              input(type="reset" style="margin-left:20px").btn.btn-warning
+                                  
+                    #mdp.tab-pane.fade.align
+                      .col-lg-12
+                      // Advanced Tables
+                      .panel.panel-default
+                        .panel-body
+                          form(action="/insert-mandapeta-data", method="post")
+                            .table-responsive
+                              table.table.table-striped.table-bordered.table-hover
+                                thead
+                                  tr
+                                    th Bus No
+                                    th Town
+                                    th Route
+                                    th Code
+                                    th Model
+                                    th Capacity
+                                    th Strength
+                                    th Standing
+                                    th Date
+                                    th Intime
+                                    th Remarks
+                                tbody
+                                  each mandapeta in Mandapeta
+                              
+                                    tr
+                                      td 
+                                        input(type="text", name="busno", value=mandapeta.BusNo, readonly)  
+                                      td 
+                                        input(type="text", name="town", value=mandapeta.Town, readonly)  
+                                      td
+                                        input(type="text", name="route", value=mandapeta.Route) 
+                                      td
+                                        input(type="text", name="code", value=mandapeta.Code, readonly)
+                                      td 
+                                        input(type="text", name="model", value=mandapeta.Model, readonly)  
+                                      td
+                                        input(type="text", name="capacity", value=mandapeta.Capacity, readonly) 
+                                      td
+                                        input(type="text", name="strength") 
+                                      td
+                                        input(type="text", name="standing") 
+                                      td
+                                        input(type="text", name="date", value=mandapeta.Date)   
+                                      td
+                                        input(type="text", name="intime", value=mandapeta.Intime)
+                                      td
+                                        input(type="text", name="remarks")
+                                
+                              input(type="submit").btn.btn-info 
+                              input(type="reset" style="margin-left:20px").btn.btn-warning      
+                    #others.tab-pane.fade.align
+                      .col-lg-12
+                      // Advanced Tables
+                      .panel.panel-default
+                        .panel-body
+                          form(action="/insert-others-data", method="post")
+                            .table-responsive
+                              table.table.table-striped.table-bordered.table-hover
+                                thead
+                                  tr
+                                    th Bus No
+                                    th Town
+                                    th Route
+                                    th Code
+                                    th Model
+                                    th Capacity
+                                    th Strength
+                                    th Standing
+                                    th Date
+                                    th Intime
+                                    th Remarks
+                                tbody
+                                  each other in others
+                              
+                                    tr
+                                      td 
+                                        input(type="text", name="busno", value=other.BusNo, readonly)  
+                                      td 
+                                        input(type="text", name="town", value=other.Town, readonly)  
+                                      td
+                                        input(type="text", name="route", value=other.Route) 
+                                      td
+                                        input(type="text", name="code", value=other.Code, readonly)
+                                      td 
+                                        input(type="text", name="model", value=other.Model, readonly)  
+                                      td
+                                        input(type="text", name="capacity", value=other.Capacity, readonly) 
+                                      td
+                                        input(type="text", name="strength") 
+                                      td
+                                        input(type="text", name="standing")
+                                      td
+                                        input(type="text", name="date", value=other.Date)    
+                                      td
+                                        input(type="text", name="intime", value=other.Intime)
+                                      td
+                                        input(type="text", name="remarks")
+                              input(type="submit").btn.btn-info 
+                              input(type="reset" style="margin-left:20px").btn.btn-warning    
+                #report.tab-pane.fade.align
+                  .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')         
+                    .row
+                      br
+                      form.form-horizontal.col-md-8.col-md-offset-2.col-xs-12(action='', method='post')
+                        br
+                        br
+                        br
+                        .form-group.registration-date
+                          label.control-label.col-sm-3(for='registration-date1') Select Date:
+                          .input-group.registration-date-time
+                            span#basic-addon1.input-group-addon
+                              span from
+                            input#from.form-control(type='date', name='fdate', required='')
+                            span#basic-addon1.input-group-addon
+                              span to
+                            input#to.form-control(type='date', name='tdate', required='')
+                        .col-md-12.text-center
+                          br
+                          button#generate.btn.btn-success(type='button') Generate Report
+
+                    br
+                    br             
+                    .table-responsive
+                      table.dataTables-example.report.table.table-striped.table-bordered.table-hover(style="color: #000;")
+                        thead
+                          tr
+                            th Bus No
+                            th Status
+                            th Date 
+                            th Time
+                #upload.tab-pane.fade.align
+                  center(style='margin-top:200px')
+                    p(style='font-family:sans-serif;font-size:20px')
+                    
+                      form(id='uploadForm', enctype ='multipart/form-data', action='/uploadxml', method='post')
+                        br
+                        center
+                          .col-md-3.col-md-offset-3
+                            input.form-control(type='file', name='file')
+                            br
+                            br
+                            
+                            input.btn.btn-success(type='submit',name='submit',value='Upload',style='font-size:15px;font-family:sans-serif;width:200px;')   
+                #add.tab-pane.fade.align
+                  .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')         
+                    .row
+                      br
+                      br
+                      form.form-horizontal(action='/addbus', method='post').col-md-6.col-md-offset-3
+                        label.control-label.col-md-1 Bus No:
+                        .input-group.col-md-6
+                          span.input-group-addon
+                            span.i.fa.fa-sort-numeric-asc
+                          input.form-control(type='text', name='busno', placeholder='Enter Bus No.')
+                        br
+                        br
+                        label.control-label.col-md-1 Tag Id:
+                        .input-group.col-md-6
+                          span.input-group-addon
+                            span.i.fa.fa-sort-numeric-desc
+                          input.form-control(type='text', name='tagid', placeholder='Enter Tag No.')
+                        br
+                        br
+                        label.control-label.col-md-1 Status:
+                        .input-group.col-md-6
+                          span.input-group-addon
+                            span.i.fa.fa-hourglass
+                          select.form-control(name='status')
+                            option(value='IN') IN
+                            option(value='OUT') OUT
+                        br
+                        br
+                        .form-group
+                          .col-sm-offset-2.col-sm-10
+                            input.btn.btn-info(type='submit', value='ADD')
+                      br
+                      br
+                    .row
+                      .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')        
+                        .row 
+                          br   
+                          .col-lg-12
+                            .panel.panel-default
+                              .panel-body
+                                .table-responsive
+                                  table.dataTables-example.table.table-striped.table-bordered.table-hover(style='width:100%')
+                                    thead
+                                      tr
+                                        th Bus No
+                                        th Tag No
+                                        th Status
+                                        th Action
+                                    tbody
+                                      each add in addbus
+                                        tr
+                                          td #{add.BusNo}
+                                          td #{add.Tagid}
+                                          td #{add.Status}
+                                          td 
+                                            button.btn.btn-primary(type='button', data-toggle='modal', data-target='#myModal', value=add._id).edit edit
+                                            button.btn.btn-danger(type='button', value=add._id, style="margin-left:10px").remove Delete
+        #myModal.modal.fade
+          .modal-dialog
+            .modal-content
+              // Modal Header
+              .modal-header
+                h4.modal-title Update Bus Details
+                button.close(type='button', data-dismiss='modal') ×
+              // Modal body
+              .modal-body
+                form.form-horizontal(action='/updatebus', method='post')
+                  .hide
+                    label.control-label.col-md-1 Id:
+                    .input-group.col-md-6
+                      span.input-group-addon
+                        span.i.fa.fa-sort-numeric-asc
+                      input#id.form-control(type='text', name='id')
+                  br
+                  br
+                  label.control-label.col-md-1 Bus No:
+                  .input-group.col-md-6
+                    span.input-group-addon
+                      span.i.fa.fa-sort-numeric-asc
+                    input#busno.form-control(type='text', name='busno', placeholder='Enter Bus No.')
+                  br
+                  br
+                  label.control-label.col-md-1 Tag Id:
+                  .input-group.col-md-6
+                    span.input-group-addon
+                      span.i.fa.fa-sort-numeric-desc
+                    input#tag.form-control(type='text', name='tagid', placeholder='Enter Tag No.')
+                  br
+                  br
+                  label.control-label.col-md-1 Status:
+                  .input-group.col-md-6
+                    span.input-group-addon
+                      span.i.fa.fa-hourglass
+                    select#status.form-control(name='status')
+                      option(value='IN') IN
+                      option(value='OUT') OUT
+                  br
+                  br
+                  .form-group
+                    .col-sm-offset-2.col-sm-10
+                      input.btn.btn-info(type='submit', value='Update') 
+    // MAIN CONTENT
+    // main content end
+    // js placed at the end of the document so the pages load faster
+    script(src='javascripts/jquery.js')
+    script(src='javascripts/bootstrap.min.js')
+    script(src='javascripts/jquery-ui-1.9.2.custom.min.js')
+    script(src='javascripts/jquery.ui.touch-punch.min.js')
+    script(src='javascripts/jquery.dcjqaccordion.2.7.js')
+    script(src='javascripts/jquery.scrollTo.min.js')
+    script(src='javascripts/jquery.nicescroll.js')
+    // common script for all pages
+    script(src='javascripts/common-scripts.js')
+    script(src='javascripts/jquery.dataTables.min.js')
+    script(src='javascripts/dataTables.buttons.min.js')
+    script(src='javascripts/buttons.flash.min.js')
+    script(src='javascripts/jszip.min.js')
+    script(src='javascripts/pdfmake.min.js')
+    script(src='javascripts/vfs_fonts.js')
+    script(src='javascripts/buttons.html5.min.js')
+    script(src='javascripts/buttons.print.min.js')
+    script(src='javascripts/date.js')
+    script(src='javascripts/presentdate.js')
+    script(src='javascripts/update.js')
+    script(src='javascripts/delete.js')
+    script(src='javascripts/routeedit.js')
+    script.
+      $(document).ready(function () {
+      $('.dataTables-example').dataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'print',
+                title: 'Bus Report'
+            }
+        ]
+      });
+      });

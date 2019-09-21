@@ -1,0 +1,15 @@
+.date {
+  font-size: 24px;
+  font-weight: 500;
+  font-family: 'Lato', sans-serif;
+}
+.date#printDate {
+  color: #e74c3c;
+}
+.date#printDay {
+  margin: 0 20px;
+  color: #2ecc71;
+}
+.date#printTime {
+  color: #9b59b6;
+}
