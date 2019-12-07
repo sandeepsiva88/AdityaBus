@@ -15,6 +15,21 @@ var buslogin=db.get('buslogin');
 router.get('/', function(req, res, next) {
   res.render('pageloader');
 });
+/*IN Buses*/
+router.get('/IN', function(req, res) {
+  var date= moment().format('DD-MM-YYYY')
+  bus.find({"Status":"IN","IN":1,"Date":date},function(err,docs){
+  res.locals.indata = docs;
+  res.render('in');
+});
+});
+/*OUT Buses*/
+router.get('/OUT', function(req, res) {
+  bus.find({"Status":"OUT","OUT":1},function(err,docs){
+  res.locals.outdata = docs;
+  res.render('out');
+});
+});
 /*Get Login page*/
 router.get('/login',function(req,res){
   if(req.session && req.session.user){
@@ -335,14 +350,19 @@ router.post('/routeedit', function(req,res){
 
 // taging the bus with tagid
 router.get('/bus/:Tagid',function(req,res){
-  var date= moment().format('DD-MM-YYYY')
-  var Time= moment().format('h:mm:ss')
-  console.log(date)
-  console.log(Time)
-  // console.log(s)
+  var Time=moment().format("hh:mm:ss a");
+    var presentdate=moment().format('DD-MM-YYYY');
+    var temp=moment().format('HH:mm');
+    var timestamp=presentdate+" "+temp;
+      dateTimeParts=timestamp.split(' '),
+      timeParts=dateTimeParts[1].split(':'),
+      dateParts=dateTimeParts[0].split('-');
+    var date = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
+    var datet=date.getTime();
+  console.log(datet)
   // console.log(y)
   // console.log(d)
-   bus.update({"Tagid":req.params.Tagid},{$set:{"Date":date,"Time":Time}}, function(err,docs){
+   bus.update({"Tagid":req.params.Tagid},{$set:{"Date":presentdate,"Time":Time,"Timestamp":datet}}, function(err,docs){
      if(docs){
        // console.log(docs)
         bus.findOne({"Tagid":req.params.Tagid},function(err,docs2){
@@ -361,7 +381,7 @@ router.get('/bus/:Tagid',function(req,res){
                if(docs4){
                    // console.log(docs4)
                    
-                    bus.findOne({"Date":date,"Time":Time,"Tagid":req.params.Tagid,"Status":"IN"}, function(err,docs5){
+                    bus.findOne({"Date":presentdate,"Time":Time,"Tagid":req.params.Tagid,"Status":"IN"}, function(err,docs5){
                      if(docs5){
                         // console.log(docs5)
                          bus.update({"BusNo":busno},{$set:{"IN":1,"OUT":0}},{multi:true})
@@ -374,7 +394,7 @@ router.get('/bus/:Tagid',function(req,res){
                        // console.log("nooo")
                      }
                    })
-                    bus.findOne({"Date":date,"Time":Time,"Tagid":req.params.Tagid,"Status":"OUT"}, function(err,docs6){
+                    bus.findOne({"Date":presentdate,"Time":Time,"Tagid":req.params.Tagid,"Status":"OUT"}, function(err,docs6){
                     if(docs6){
                        // console.log(docs6)
                         bus.update({"BusNo":busno},{$set:{"IN":0,"OUT":1}},{multi:true})
@@ -402,12 +422,59 @@ router.get('/bus/:Tagid',function(req,res){
      }
   })
   
-})
+});
+/*edit reason*/
+router.post('/editreason', function(req,res){
+  var date= moment().format('DD-MM-YYYY');
+  var id=req.body.no;
+  console.log(id);
+  bus.find({"Time":id,"Date":date}, function(err,docs){
+  res.send(docs);
+  });
+});
+/*update reason*/
+router.post('/updatereason', function(req,res){
+  var date= moment().format('DD-MM-YYYY');
+  var data1 = {
+    BusNo : req.body.busno,
+    Status : req.body.status,
+    Date : req.body.date,
+    Time : req.body.time,
+    Reason : req. body.reason
+  }
+  bus.update({"Time":req.body.time,"Date":date},{$set:data1});
+  data.update({"Time":req.body.time,"Date":date},{$set:data1});
+  res.redirect('/IN');
+});
+//Bus Count Details
+router.get('/:BusNo/:count', function(req,res){
+  var date= moment().format('DD-MM-YYYY');
+  console.log(req.params.BusNo);
+  console.log(req.params.count);
+  data.update({"Date":date,"Status":"IN","BusNo":req.params.BusNo},{$set:{"Count":req.params.count}},function(err,docs){
+     if(docs){
+      console.log(docs);
+      res.send(docs);
+      route.update({"Code":req.params.BusNo,"Date":date},{$set:{"Strength":req.params.count}}, function(err,docs1){
+         console.log(docs1);
+      });
+     }
+      else if(!docs){
+      console.log("Working");
+     }
+     else{
+      console.log(err);
+     }
+  });
+  
+});
+
 //Add New Bus
 router.post('/addbus', function(req,res){
   var newbus = {
     BusNo:req.body.busno,
     Tagid:req.body.tagid,
+    RegisterNo:req.body.regno,
     Status:req.body.status
   }
   bus.insert(newbus, function(err,docs){
@@ -425,6 +492,7 @@ router.post('/edit', function(req,res){
 router.post('/updatebus', function(req,res){
  var updatebus={
    BusNo:req.body.busno,
+   RegisterNo:req.body.regno,
    Tagid:req.body.tagid,
    Status:req.body.status
  }
@@ -438,20 +506,36 @@ router.post('/updatebus', function(req,res){
      }
  });
 });
-//rmove added bus
+//remove added bus
 router.post('/remove', function(req,res){
  bus.remove({"_id":req.body.no}, function(err,docs){
    res.send(docs);
  });
 });
 //filter using date
+function gettimestamp(currentdate,temp)
+{
+  var timestamp=currentdate+" "+temp;
+      dateTimeParts=timestamp.split(' '),
+      timeParts=dateTimeParts[1].split(':'),
+      dateParts=dateTimeParts[0].split('-');
+var date = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
+return date.getTime();
+}
+//filter using date
 router.post('/report' , function(req,res){
- var from=req.body.fromdate;
- //console.log(from);
- var to=req.body.todate;
- //console.log(to);
- data.find({"Date":{$gte:from,$lte:to}}, function(err,docs){
- //console.log(docs);
+ var fromdate=req.body.fromdate;
+ console.log(fromdate);
+  var todate=req.body.todate;
+  console.log(todate);
+  var from_x="00:00";
+  var to_x="23:59";
+  var from_date=gettimestamp(fromdate,from_x);
+  console.log(from_date);
+  var to_date=gettimestamp(todate,to_x);
+  console.log(to_date);
+  data.find({"Timestamp" :{$gte: from_date,$lte: to_date}}, function(err,docs){
+
    if(docs){
      res.send(docs)
    }
@@ -459,6 +543,21 @@ router.post('/report' , function(req,res){
      console.log(err)
    }
  });
+});
+
+//search BUS
+router.post('/search', function(req,res){
+  var Bus = req.body.busno;
+  data.find({"BusNo":Bus}, function(err,docs){
+    if (docs) {
+      console.log(docs);
+      res.send(docs)
+      
+    }
+    else{
+      console.log(err);
+    }
+  });
 });
 // upload multiple bus data
 var storage = multer.diskStorage({ //multers disk storage settings
@@ -528,5 +627,72 @@ route.update({"BusNo":data[i].busno},{$set:{"BusNo":data[i].busno,"Town":data[i]
 
 }
 }
+// upload multiple bus data
+var storage = multer.diskStorage({ //multers disk storage settings
+        destination: function (req, file, cb) {
+            cb(null, '../uploads/')
+        },
+        filename: function (req, file, cb) {
+            var datetimestamp = Date.now();
+            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+        }
+});
 
+var upload = multer({ //multer settings
+                    storage: storage,
+                    fileFilter : function(req, file, callback) { //file filter
+                        if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
+                            return callback(new Error('Wrong extension type'));
+                        }
+                        callback(null, true);
+                    }
+}).single('file');
+
+    /** API path that will upload the files */
+  router.post('/busuploadxml', function(req, res) {
+        var exceltojson;
+        upload(req,res,function(err){
+            if(err){
+                 res.json({error_code:1,err_desc:err});
+                 return;
+            }
+            if(!req.file){
+              res.json({error_code:1,err_desc:"No file passed"});
+                return;
+            }
+            if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
+                exceltojson = xlsxtojson;
+            } else {
+                exceltojson = xlstojson;
+            }            try {
+                exceltojson({
+                    input: req.file.path,
+                    output: "out.json", 
+                    lowerCaseHeaders:true
+                }, function(err,result){
+                    if(err) {
+                        return res.send('error in importing data');
+                    }
+                    saveData1(result);
+               res.redirect("/home");
+
+            });
+            } catch (e){
+                res.send("Corupted excel file");
+            }
+       });
+});
+
+function saveData1(dataa) {
+ //console.log(data);
+for(var i=0;i<dataa.length;i++){
+bus.update({"Tagid":dataa[i].Tagid},{$set:{"Tagid":dataa[i].Tagid, "RegisterNo":dataa[i].RegisterNo,"BusNo":dataa[i].BusNo,"Status":dataa[i].Status}},{upsert: true},{multi:true},  function(err, data ) { 
+    console.log(dataa);
+    if(err)
+    console.log(err);
+
+});
+
+}
+}
 module.exports = router;

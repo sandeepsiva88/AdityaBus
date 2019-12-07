@@ -6,6 +6,7 @@ $(document).ready(function(){
 			var parsedData=JSON.parse(stringifiedData);
 			$('#id').val(parsedData[0]._id);
 			$('#busno').val(parsedData[0].BusNo);
+			$('#Regno').val(parsedData[0].RegisterNo)
 			$('#tag').val(parsedData[0].Tagid);
 			$('#status').val(parsedData[0].Status);
 		});

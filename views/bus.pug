@@ -324,6 +324,12 @@ html(lang='en')
             -var role=user.Role
             -if(role=='Admin'){
               li.sub-menu
+                a(data-toggle='tab', href='#search')
+                  i.fa.fa-plus
+                  span Search Bus
+            -}
+            -if(role=='Admin'){
+              li.sub-menu
                 a(data-toggle='tab', href='#add')
                   i.fa.fa-plus
                   span Add Bus
@@ -675,6 +681,50 @@ html(lang='en')
                             th Status
                             th Date 
                             th Time
+                #search.tab-pane.fade.align
+                    .row.dashboard-stats.container
+                      .col-md-2.col-sm-6.col-md-offset-9
+                    br
+                    br
+                    .container(style='background-color: white;border-radius: 10px')
+                      .table-responsive
+                        table
+                          br
+                          br
+                          tr
+                            th(style='border-top:none; !important')
+                              Enter Student Id :
+                            td(style='border-top:none; !important')
+                              input.uppercase.form-control#id.input-sm(type='text') 
+
+                          tr   
+                            td(style='border-top:none; !important')  
+                            td(style='border-top:none; !important')
+                              br
+                              br
+                              button.btn.btn-info#getdata(style='float:right')  Get       
+                        br
+                        br      
+                        .update       
+                          .table-responsive
+                            table#dataTables-example.table.table-striped.table-bordered.table-hover(style="color: #000;")
+                              thead
+                                tr
+                                  th Student Name
+                                  th Roll Number
+                                  th Class
+                                  th Branch
+                                  th Section
+                                  th Semester
+                                  th Year
+                                  th College
+                                  th Date
+                                  th Lab
+                                  th Floor
+                                  th Building
+                                  th In Time
+                                  th Out Time
+                            br            
                 #upload.tab-pane.fade.align
                   center(style='margin-top:200px')
                     p(style='font-family:sans-serif;font-size:20px')

@@ -8,9 +8,9 @@ var xlsxtojson = require("xlsx-to-json-lc");
 var db=monk('localhost:27017/bus');
 var bus=db.get('bus');
 var data=db.get('data');
+var test = db.get('test');
 var route=db.get('route');
 var buslogin=db.get('buslogin');
-var buscount = db.get('buscount');
 /*Get Login Page*/
 router.get('/', function(req, res, next) {
   res.render('pageloader');
@@ -49,66 +49,360 @@ router.get('/home', function(req,res){
   if(req.session && req.session.user){
     res.locals.user = req.session.user;
   var date= moment().format('DD-MM-YYYY')
-  console.log(date);
+  //console.log(date);
   var time= moment().format('h:mm:ss')
-  console.log(time);
+  //console.log(time);
   data.find({"Date":date},function(err,docs){
-  route.find({},function(err,docs1){
-  bus.find({}, function(err,docs2){
-  data.aggregate([
-    { "$group": {
-       "_id": "$BusNo",
-       "count": {
-           "$sum": {
-               "$cond": [
-                   { "$eq": [ "$Status", "IN" ] },
-                   1,
-                   { "$cond": [
-                      { "$eq": [ "$Status", "OUT" ] },
-                      -1,
-                       0
-                   ]}
-               ]
-           }
-       }
-    },
-    },  
-    {
-      $out : "buscount"
-    } 
-    ]);
-    buscount.find({"count":0}, function(err,docs5){
-    buscount.find({"count":1}, function(err,docs6){
+  test.find({"Date":date}, function(err,docs2){
+  route.find({},function(err,docs10){
+    for(i=0;i<=166;i++){
+      var busno=docs10[i].BusNo;
+      route.update({"BusNo":busno},{$set:{"Date":date}})
+    }
+ 
+  route.find({"Town":"Kakinada"}, function(err,docs3){
+  route.find({"Town":"Rajahmundry"}, function(err,docs4){
+  route.find({"Town":"Mandapeta"}, function(err,docs5){
+  route.find({"Town":"Others"}, function(err,docs6){
+  bus.find({}, function(err,docs7){
+  bus.find({"Status":"IN","IN":1,"Date":date}, function(err,docs8){
+  bus.find({"Status":"OUT","OUT":1},function(err,docs9){
     res.locals.daywise=docs;
-    res.locals.alldata=docs1;
-    res.locals.addbus=docs2;
-    res.locals.indata=docs6.length;
-    res.locals.outdata=docs5.length;
+    res.locals.route=docs2;
+    res.locals.Kakinda=docs3;
+    res.locals.Rajahmundry=docs4;
+    res.locals.Mandapeta=docs5;
+    res.locals.others=docs6;
+    res.locals.addbus=docs7;
+    res.locals.indata=docs8.length;
+    res.locals.outdata=docs9.length;
     res.render('index');
   });
   });
   });
   });
   });
+  });
+  });
+  });
+  });
+  }); 
   } 
   else{
   req.session.reset();
   res.redirect('/login');
   }
 });
-// Bus data from external source
-router.get('/bus/:Tagid',function(req,res){
-  var date= moment().format('DD-MM-YYYY');
-  var time= moment().format('h:mm:ss');
-  var id = req.params.Tagid;
-  bus.find({"Tagid":id}, function(err,data1){
-  var busno = data1[0].BusNo;
-  var status = data1[0].Status;
-  data.insert({"BusNo":busno,"Tagid":id,"Status":status,"Date":date,"Time":time}, function(err,docs){
-    res.redirect('/home');
-  });
+//update bus route data 
+router.post('/routedata', function(req,res){
+  var id=req.body.no; 
+  var str=req.body.Strength;
+  var stand=req.body.Stand;
+  var intime=req.body.Intime;
+  var remark=req.body.Remarks;
+  var route=req.body.Route;
+
+  test.update({"_id":id},{$set:{"Route":route,"Strength":str,"Standing":stand,"Intime":intime,"Remarks":remark}}, function(err,docs){
+    if(docs){
+      // console.log(docs)
+      res.redirect('/home');
+        test.findOne({"_id":id}, function(err,docs2){
+              if(docs2){
+                var busno=docs2.BusNo
+                route.update({"BusNo":busno},{$set:{"Strength":str,"Standing":stand,"Intime":intime,"Remarks":remark}}, function(err,docs3){
+                  // console.log(docs3)
+                })
+              }
+              else{
+                console.log(err)
+              }
+         })
+    }
+    else{
+      console.log(err)
+    }
+  })
+
+  
+  
+})
+//insert kakinada route data
+router.post('/insertdata', function(req,res){
+  var date= moment().format('DD-MM-YYYY')
+ var bus=req.body.busno;
+  var town=req.body.town;
+  var rout=req.body.route;
+  var code=req.body.code;
+  var capacity=req.body.capacity;
+  var model=req.body.model;
+  var strength=req.body.strength;
+  var standing=req.body.standing;
+  var intime=req.body.intime;
+  var remarks=req.body.remarks;
+  route.count({"Town":"Kakinada"},function(err,docs){
+    var count=docs;
+      
+    for(i=0;i<=count-1;i++){
+      var faith={
+        BusNo:bus[i],
+        Town:town[i],
+        Route:rout[i],
+        Code:code[i],
+        Model:model[i],
+        Capacity:capacity[i],
+        Strength:strength[i],
+        Standing:standing[i],
+        Intime:intime[i],
+        Remarks:remarks[i],
+        Date:date
+      }
+      test.insert(faith,function(err,docs){
+        if(docs){
+        // console.log(docs)
+        route.update({"BusNo":docs.BusNo},{$set:{"Strength":docs.Strength,"Standing":docs.Standing,"Intime":docs.Intime,"Remarks":docs.Remarks}}, function(err,docs1){
+          // console.log(docs1)
+        })
+        }
+        else{
+          console.log(err)
+        }
+      })
+    
+    }
+       res.redirect('/home')
+    })
+    
+  })
+
+//inserting Rajahmundry bus route data  
+router.post('/insert-rajahmundry-data', function(req,res){
+  var date= moment().format('DD-MM-YYYY')
+ var bus=req.body.busno;
+  var town=req.body.town;
+  var rout=req.body.route;
+  var code=req.body.code;
+  var model=req.body.model;
+  var capacity=req.body.capacity;
+  var strength=req.body.strength;
+  var standing=req.body.standing;
+  var intime=req.body.intime;
+  var remarks=req.body.remarks;
+  route.count({"Town":"Rajahmundry"},function(err,docs){
+    var count=docs;
+      
+    for(i=0;i<=count-1;i++){
+      var faith={
+        BusNo:bus[i],
+        Town:town[i],
+        Route:rout[i],
+        Code:code[i],
+        Model:model[i],
+        Capacity:capacity[i],
+        Strength:strength[i],
+        Standing:standing[i],
+        Intime:intime[i],
+        Remarks:remarks[i],
+        Date:date
+      }
+      test.insert(faith,function(err,docs){
+        if(docs){
+          // console.log(docs)
+          route.update({"BusNo":docs.BusNo},{$set:{"Strength":docs.Strength,"Standing":docs.Standing,"Intime":docs.Intime,"Remarks":docs.Remarks}}, function(err,docs1){
+            // console.log(docs1)
+          
+         })
+        }
+        else{
+          console.log(err)
+        }
+      })
+    
+    }
+    res.redirect('/home')
+    })
+    
+  })  
+
+  //insert Mandapeta bus route data
+  router.post('/insert-mandapeta-data', function(req,res){
+    var date= moment().format('DD-MM-YYYY');  
+    var bus=req.body.busno;
+     var town=req.body.town;
+     var rout=req.body.route;
+     var code=req.body.code;
+     var model=req.body.model;
+     var capacity=req.body.capacity;
+     var strength=req.body.strength;
+     var standing=req.body.standing;
+     var intime=req.body.intime;
+     var remarks=req.body.remarks;
+     route.count({"Town":"Mandapeta"},function(err,docs){
+       var count=docs;
+         
+       for(i=0;i<=count-1;i++){
+         var faith={
+           BusNo:bus[i],
+           Town:town[i],
+           Route:rout[i],
+           Code:code[i],
+           Model:model[i],
+           Capacity:capacity[i],
+           Strength:strength[i],
+           Standing:standing[i],
+           Intime:intime[i],
+           Remarks:remarks[i],
+           Date:date
+         }
+         test.insert(faith,function(err,docs){
+           if(docs){
+             // console.log(docs)
+             route.update({"BusNo":docs.BusNo},{$set:{"Strength":docs.Strength,"Standing":docs.Standing,"Intime":docs.Intime,"Remarks":docs.Remarks}}, function(err,docs1){
+               // console.log(docs1)
+               
+            })
+           
+           }
+           else{
+             console.log(err)
+           }
+         })
+       
+       }
+       res.redirect('/home') 
+       })
+       
+     })
+   
+
+//inserting Others bus route data  
+router.post('/insert-others-data', function(req,res){
+  var date= moment().format('DD-MM-YYYY');  
+ var bus=req.body.busno;
+  var town=req.body.town;
+  var rout=req.body.route;
+  var code=req.body.code;
+  var model=req.body.model;
+  var capacity=req.body.capacity;
+  var strength=req.body.strength;
+  var standing=req.body.standing;
+  var intime=req.body.intime;
+  var remarks=req.body.remarks;
+  route.count({"Town":"Others"},function(err,docs){
+    var count=docs;
+      
+    for(i=0;i<=count-1;i++){
+      var faith={
+        BusNo:bus[i],
+        Town:town[i],
+        Route:rout[i],
+        Code:code[i],
+        Model:model[i],
+        Capacity:capacity[i],
+        Strength:strength[i],
+        Standing:standing[i],
+        Intime:intime[i],
+        Remarks:remarks[i],
+        Date:date
+      }
+      test.insert(faith,function(err,docs){
+        if(docs){
+          // console.log(docs)
+          route.update({"BusNo":docs.BusNo},{$set:{"Strength":docs.Strength,"Standing":docs.Standing,"Intime":docs.Intime,"Remarks":docs.Remarks}}, function(err,docs1){
+            // console.log(docs1)
+            
+         })
+        
+        }
+        else{
+          console.log(err)
+        }
+      })
+    
+    }
+    res.redirect('/home') 
+    })
+    
+  })
+//edit Bus list data
+router.post('/routeedit', function(req,res){
+  var id=req.body.no;
+  console.log(id);
+   route.find({"_id":id}, function(err,docs){
+    console.log(docs)
+    res.send(docs)
   });
 });
+
+// taging the bus with tagid
+router.get('/bus/:Tagid',function(req,res){
+  var date= moment().format('DD-MM-YYYY')
+  var Time= moment().format('h:mm:ss')
+  console.log(date)
+  console.log(Time)
+  // console.log(s)
+  // console.log(y)
+  // console.log(d)
+   bus.update({"Tagid":req.params.Tagid},{$set:{"Date":date,"Time":Time}}, function(err,docs){
+     if(docs){
+       // console.log(docs)
+        bus.findOne({"Tagid":req.params.Tagid},function(err,docs2){
+         if(docs){
+           delete docs2._id
+           delete docs2.IN
+           delete docs2.OUT
+           var s= docs2
+          //  console.log(s)
+           data.insert(s, function(err,docs3){
+            //  console.log(docs)
+            // console.log(docs.BusNo)
+            var busno=docs3.BusNo
+             res.send(docs3)
+              bus.update({"BusNo":busno},{$set:{"IN":0,"OUT":0}}, {multi:true}, function(err,docs4){
+               if(docs4){
+                   // console.log(docs4)
+                   
+                    bus.findOne({"Date":date,"Time":Time,"Tagid":req.params.Tagid,"Status":"IN"}, function(err,docs5){
+                     if(docs5){
+                        // console.log(docs5)
+                         bus.update({"BusNo":busno},{$set:{"IN":1,"OUT":0}},{multi:true})
+                         route.update({"Code":busno},{$set:{"Intime":Time}}, function(err,docs7){
+                          // console.log(docs7)
+                         })
+                        console.log("working in")
+                     }
+                     else{
+                       // console.log("nooo")
+                     }
+                   })
+                    bus.findOne({"Date":date,"Time":Time,"Tagid":req.params.Tagid,"Status":"OUT"}, function(err,docs6){
+                    if(docs6){
+                       // console.log(docs6)
+                        bus.update({"BusNo":busno},{$set:{"IN":0,"OUT":1}},{multi:true})
+                       console.log("working out")
+                    }
+                    else{
+                      // console.log("not ever")
+                    }
+                  })
+                   
+               }
+               else{
+                 console.log(err)
+               }
+             })
+           })
+         }
+         else{
+           console.log("Not")
+         }
+       })
+     }
+     else{
+       console.log(err)
+     }
+  })
+  
+})
 //Add New Bus
 router.post('/addbus', function(req,res){
   var newbus = {

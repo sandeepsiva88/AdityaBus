@@ -6,7 +6,7 @@ html(lang='en')
     meta(name='description', content='')
     meta(name='author', content='Dashboard')
     meta(name='keyword', content='Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina')
-    title Bus Tracking
+    title Bus In/Out
     link(type='image/png', href='images/bus1.png', rel='icon')
     // Bootstrap core CSS
     link(rel='stylesheet', href='stylesheets/bootstrap.min.css')
@@ -26,6 +26,7 @@ html(lang='en')
     link(href='stylesheets/date.css', rel='stylesheet')
     //Page script
     script(src='javascripts/route.js')
+    script(src='javascripts/findbus.js')  
     style.
       .header, #sidebar {
       background: #2C3E50;
@@ -304,7 +305,7 @@ html(lang='en')
               a(href='#')
                 img.img-circle(src='images/bus.png', width='80')
             h5.centered 
-              p Bus Tracking
+              p Bus In/Out
             li.active
               a(data-toggle='tab', href='#home')
                 i.fa.fa-home
@@ -313,14 +314,18 @@ html(lang='en')
               a(data-toggle='tab', href='#town')
                 i.fa.fa-university
                 span Strength
-            li.sub-menu
-              a(data-toggle='tab', href='#list')
-                i.fa.fa-list
-                span List
+            //- li.sub-menu
+            //-   a(data-toggle='tab', href='#list')
+            //-     i.fa.fa-list
+            //-     span List
             li.sub-menu
               a(data-toggle='tab', href='#report')
                 i.fa.fa-bars
                 span Generate Report
+            li.sub-menu
+              a(data-toggle='tab', href='#search')
+                i.fa.fa-search
+                span Search Bus
             -var role=user.Role
             -if(role=='Admin'){
               li.sub-menu
@@ -333,8 +338,19 @@ html(lang='en')
               li.sub-menu
                 a(data-toggle='tab', href='#upload')
                   i.fa.fa-upload
-                  span Upload Data
+                  span Upload Route Data
             -}
+            -var role=user.Role
+            -if(role=='Admin'){
+              li.sub-menu
+                a(data-toggle='tab', href='#busupload')
+                  i.fa.fa-upload
+                  span Upload Bus Data
+            -}
+            li.sub-menu
+              a(data-toggle='tab', href='#contact')
+                i.fa.fa-phone
+                span Contact Us
           // sidebar menu end
       // sidebar end
       // main content start
@@ -354,24 +370,26 @@ html(lang='en')
                           #printDay.date
                           #printTime.date
                       .row.dashboard-stats.container
-                        .col-md-6.col-sm-6.col-lg-6
-                          section.panel.panel-box
-                            .panel-left.panel-icon.bg-success
-      
-                              h1(style="margin-top:50px") IN
-                            .panel-right.panel-icon.bg-reverse
-                              p.text-muted.no-margin.text
-                                span 
-                              h1(style="margin-top:50px") #{indata}
-                        .col-md-6.col-sm-6.col-lg-6
-                          section.panel.panel-box
-                            .panel-left.panel-icon.bg-warning
-      
-                              h1(style="margin-top:50px") OUT
-                            .panel-right.panel-icon.bg-reverse
-                              p.text-muted.no-margin.text
-                                span 
-                              h1(style="margin-top:50px") #{outdata}
+                        a(href="/IN")
+                          .col-md-6.col-sm-6.col-lg-6
+                            section.panel.panel-box
+                              .panel-left.panel-icon.bg-success
+        
+                                h1(style="margin-top:50px") IN
+                              .panel-right.panel-icon.bg-reverse
+                                p.text-muted.no-margin.text
+                                  span 
+                                h1(style="margin-top:50px") #{indata}
+                        a(href="/OUT")
+                          .col-md-6.col-sm-6.col-lg-6
+                            section.panel.panel-box
+                              .panel-left.panel-icon.bg-warning
+        
+                                h1(style="margin-top:50px") OUT
+                              .panel-right.panel-icon.bg-reverse
+                                p.text-muted.no-margin.text
+                                  span 
+                                h1(style="margin-top:50px") #{outdata}
                     .row 
                       br   
                       .col-lg-12
@@ -381,17 +399,26 @@ html(lang='en')
                               table.dataTables-example.table.table-striped.table-bordered.table-hover
                                 thead
                                   tr
+                                    th Register No
                                     th Bus No
                                     th status
                                     th Date
                                     th Time
+                                    th Reason
                                 tbody
                                   each day in daywise
                                     tr
+                                      td #{day.RegisterNo}
                                       td #{day.BusNo}
                                       td #{day.Status}
                                       td #{day.Date}
-                                      td #{day.Time}
+                                      -if(day.Time>"09:20:00" && day.Time<="09:59:00" && day.Status=="IN"){
+                                        td(style="color:red") #{day.Time}(Late)
+                                      -}
+                                      -else{
+                                        td #{day.Time}
+                                      -}
+                                      td #{day.Reason}
                 #list.tab-pane.fade.align
                   .row
                     .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')        
@@ -675,6 +702,40 @@ html(lang='en')
                             th Status
                             th Date 
                             th Time
+                #search.tab-pane.fade.align
+                    .row.dashboard-stats.container
+                      .col-md-2.col-sm-6.col-md-offset-9
+                    br
+                    br
+                    .container(style='background-color: white;border-radius: 10px')
+                      .table-responsive
+                        table
+                          br
+                          br
+                          tr
+                            th(style='border-top:none; !important')
+                              Enter Bus No :
+                            td(style='border-top:none; !important')
+                              input.uppercase.form-control#bus.input-sm(type='text') 
+
+                          tr   
+                            td(style='border-top:none; !important')  
+                            td(style='border-top:none; !important')
+                              br
+                              br
+                              button.btn.btn-info#getdata(style='float:right')  GET     
+                        br
+                        br      
+                        .update       
+                          .table-responsive
+                            table#dataTables-example2.table.table-striped.table-bordered.table-hover(style="color: #000;")
+                              thead
+                                tr
+                                  th Bus No
+                                  th Status
+                                  th Date 
+                                  th Time    
+                            br                        
                 #upload.tab-pane.fade.align
                   center(style='margin-top:200px')
                     p(style='font-family:sans-serif;font-size:20px')
@@ -688,6 +749,19 @@ html(lang='en')
                             br
                             
                             input.btn.btn-success(type='submit',name='submit',value='Upload',style='font-size:15px;font-family:sans-serif;width:200px;')   
+                #busupload.tab-pane.fade.align
+                  center(style='margin-top:200px')
+                    p(style='font-family:sans-serif;font-size:20px')
+                    
+                      form(id='uploadForm', enctype ='multipart/form-data', action='/busuploadxml', method='post')
+                        br
+                        center
+                          .col-md-3.col-md-offset-3
+                            input.form-control(type='file', name='file')
+                            br
+                            br
+                            
+                            input.btn.btn-success(type='submit',name='submit',value='Upload',style='font-size:15px;font-family:sans-serif;width:200px;')
                 #add.tab-pane.fade.align
                   .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')         
                     .row
@@ -698,21 +772,28 @@ html(lang='en')
                         .input-group.col-md-6
                           span.input-group-addon
                             span.i.fa.fa-sort-numeric-asc
-                          input.form-control(type='text', name='busno', placeholder='Enter Bus No.')
+                          input.form-control(type='text', name='busno', placeholder='Enter Bus No.', required)
                         br
                         br
                         label.control-label.col-md-1 Tag Id:
                         .input-group.col-md-6
                           span.input-group-addon
                             span.i.fa.fa-sort-numeric-desc
-                          input.form-control(type='text', name='tagid', placeholder='Enter Tag No.')
+                          input.form-control(type='text', name='tagid', placeholder='Enter Tag No.', required)
+                        br
+                        br
+                        label.control-label.col-md-1 Reg No.:
+                        .input-group.col-md-6
+                          span.input-group-addon
+                            span.i.fa.fa-sort-numeric-desc
+                          input.form-control(type='text', name='regno', placeholder='Enter Reg No.')
                         br
                         br
                         label.control-label.col-md-1 Status:
                         .input-group.col-md-6
                           span.input-group-addon
                             span.i.fa.fa-hourglass
-                          select.form-control(name='status')
+                          select.form-control(name='status', required)
                             option(value='IN') IN
                             option(value='OUT') OUT
                         br
@@ -733,6 +814,7 @@ html(lang='en')
                                   table.dataTables-example.table.table-striped.table-bordered.table-hover(style='width:100%')
                                     thead
                                       tr
+                                        th Register No
                                         th Bus No
                                         th Tag No
                                         th Status
@@ -740,56 +822,80 @@ html(lang='en')
                                     tbody
                                       each add in addbus
                                         tr
+                                          td #{add.RegisterNo}
                                           td #{add.BusNo}
                                           td #{add.Tagid}
                                           td #{add.Status}
                                           td 
                                             button.btn.btn-primary(type='button', data-toggle='modal', data-target='#myModal', value=add._id).edit edit
                                             button.btn.btn-danger(type='button', value=add._id, style="margin-left:10px").remove Delete
-        #myModal.modal.fade
-          .modal-dialog
-            .modal-content
-              // Modal Header
-              .modal-header
-                h4.modal-title Update Bus Details
-                button.close(type='button', data-dismiss='modal') ×
-              // Modal body
-              .modal-body
-                form.form-horizontal(action='/updatebus', method='post')
-                  .hide
-                    label.control-label.col-md-1 Id:
-                    .input-group.col-md-6
-                      span.input-group-addon
-                        span.i.fa.fa-sort-numeric-asc
-                      input#id.form-control(type='text', name='id')
-                  br
-                  br
-                  label.control-label.col-md-1 Bus No:
-                  .input-group.col-md-6
-                    span.input-group-addon
-                      span.i.fa.fa-sort-numeric-asc
-                    input#busno.form-control(type='text', name='busno', placeholder='Enter Bus No.')
-                  br
-                  br
-                  label.control-label.col-md-1 Tag Id:
-                  .input-group.col-md-6
-                    span.input-group-addon
-                      span.i.fa.fa-sort-numeric-desc
-                    input#tag.form-control(type='text', name='tagid', placeholder='Enter Tag No.')
-                  br
-                  br
-                  label.control-label.col-md-1 Status:
-                  .input-group.col-md-6
-                    span.input-group-addon
-                      span.i.fa.fa-hourglass
-                    select#status.form-control(name='status')
-                      option(value='IN') IN
-                      option(value='OUT') OUT
-                  br
-                  br
-                  .form-group
-                    .col-sm-offset-2.col-sm-10
-                      input.btn.btn-info(type='submit', value='Update') 
+                  #myModal.modal.fade
+                    .modal-dialog
+                      .modal-content
+                        // Modal Header
+                        .modal-header
+                          h4.modal-title Update Bus Details
+                          button.close(type='button', data-dismiss='modal') ×
+                        // Modal body
+                        .modal-body
+                          form.form-horizontal(action='/updatebus', method='post')
+                            .hide
+                              label.control-label.col-md-1 Id:
+                              .input-group.col-md-6
+                                span.input-group-addon
+                                  span.i.fa.fa-sort-numeric-asc
+                                input#id.form-control(type='text', name='id')
+                            br
+                            br
+                            label.control-label.col-md-1 Bus No:
+                            .input-group.col-md-6
+                              span.input-group-addon
+                                span.i.fa.fa-sort-numeric-asc
+                              input#busno.form-control(type='text', name='busno', placeholder='Enter Bus No.')
+                            br
+                            br
+                            label.control-label.col-md-1 Reg No:
+                            .input-group.col-md-6
+                              span.input-group-addon
+                                span.i.fa.fa-sort-numeric-asc
+                              input#Regno.form-control(type='text', name='regno', placeholder='Enter Reg No.')    
+                            br
+                            br
+                            label.control-label.col-md-1 Tag Id:
+                            .input-group.col-md-6
+                              span.input-group-addon
+                                span.i.fa.fa-sort-numeric-desc
+                              input#tag.form-control(type='text', name='tagid', placeholder='Enter Tag No.')
+                            br
+                            br
+                            label.control-label.col-md-1 Status:
+                            .input-group.col-md-6
+                              span.input-group-addon
+                                span.i.fa.fa-hourglass
+                              select#status.form-control(name='status')
+                                option(value='IN') IN
+                                option(value='OUT') OUT
+                            br
+                            br
+                            .form-group
+                              .col-sm-offset-2.col-sm-10
+                                input.btn.btn-info(type='submit', value='Update') 
+                
+                #contact.tab-pane.fade.align
+                  .container
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    br
+                    .row
+                      .col-md-12(style='text-align: center;')
+                        h1(style='color: grey;font-size: 45px')
+                          b For any queries,please contact
+                      .col-md-12.img-responsive(style='text-align: center;')
+                        img(src='images/thubvcard.jpg', width='620px', draggable="false")
     // MAIN CONTENT
     // main content end
     // js placed at the end of the document so the pages load faster
@@ -818,6 +924,31 @@ html(lang='en')
     script.
       $(document).ready(function () {
       $('.dataTables-example').dataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'csvHtml5',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'pdfHtml5',
+                title: 'Bus Report'
+            },
+            {
+                extend: 'print',
+                title: 'Bus Report'
+            }
+        ]
+      });
+      $('#dataTables-example2').dataTable({
         dom: 'Bfrtip',
         buttons: [
             {
