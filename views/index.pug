@@ -314,10 +314,10 @@ html(lang='en')
               a(data-toggle='tab', href='#town')
                 i.fa.fa-university
                 span Strength
-            //- li.sub-menu
-            //-   a(data-toggle='tab', href='#list')
-            //-     i.fa.fa-list
-            //-     span List
+            li.sub-menu
+              a(data-toggle='tab', href='#list')
+                i.fa.fa-list
+                span List
             li.sub-menu
               a(data-toggle='tab', href='#report')
                 i.fa.fa-bars
@@ -412,8 +412,17 @@ html(lang='en')
                                       td #{day.BusNo}
                                       td #{day.Status}
                                       td #{day.Date}
-                                      -if(day.Time>"09:20:00" && day.Time<="09:59:00" && day.Status=="IN"){
-                                        td(style="color:red") #{day.Time}(Late)
+                                      -if(day.Time>"09:20:00 am" && day.Time<="09:59:00 am" && day.Status=="IN"){
+                                        td(style="color:red") #{day.Time}(Late In)
+                                      -}
+                                      -else if(day.Time>"06:00:00 am" && day.Time<="08:30:00 am" && day.Status=="IN"){
+                                        td(style="color:green") #{day.Time}(Early In)
+                                      -}
+                                      -else if(day.Time>="09:30:00 am" && day.Time<="04:30:00 pm" && day.Status=="OUT"){
+                                        td(style="color:yellow") #{day.Time}(Early Out)
+                                      -}
+                                      -else if(day.Time>="05:00:00 pm" && day.Time<="07:00:00 pm" && day.Status=="OUT"){
+                                        td(style="color:blue") #{day.Time}(Late Out)
                                       -}
                                       -else{
                                         td #{day.Time}
@@ -499,17 +508,17 @@ html(lang='en')
                                  
                                     tr
                                       td 
-                                        input(type="text", name="busno", value=kakinada.BusNo, readonly)  
+                                        input(type="text", name="busno", value=kakinada.BusNo)  
                                       td 
-                                        input(type="text", name="town", value=kakinada.Town, readonly)  
+                                        input(type="text", name="town", value=kakinada.Town)  
                                       td
                                         input(type="text", name="route", value=kakinada.Route) 
                                       td
-                                        input(type="text", name="code", value=kakinada.Code, readonly)
+                                        input(type="text", name="code", value=kakinada.Code)
                                       td
-                                        input(type="text", name="model", value=kakinada.Model, readonly)
+                                        input(type="text", name="model", value=kakinada.Model)
                                       td
-                                        input(type="text", name="capacity", value=kakinada.Capacity, readonly)
+                                        input(type="text", name="capacity", value=kakinada.Capacity)
                                       td
                                         input(type="text", name="strength") 
                                       td
@@ -548,17 +557,17 @@ html(lang='en')
                               
                                     tr
                                       td 
-                                        input(type="text", name="busno", value=rajahmundry.BusNo, readonly)  
+                                        input(type="text", name="busno", value=rajahmundry.BusNo)  
                                       td 
-                                        input(type="text", name="town", value=rajahmundry.Town, readonly)
+                                        input(type="text", name="town", value=rajahmundry.Town)
                                       td
                                         input(type="text", name="route", value=rajahmundry.Route) 
                                       td
-                                        input(type="text", name="code", value=rajahmundry.Code, readonly)
+                                        input(type="text", name="code", value=rajahmundry.Code)
                                       td 
-                                        input(type="text", name="model", value=rajahmundry.Model, readonly)  
+                                        input(type="text", name="model", value=rajahmundry.Model)  
                                       td
-                                        input(type="text", name="capacity", value=rajahmundry.Capacity, readonly) 
+                                        input(type="text", name="capacity", value=rajahmundry.Capacity) 
                                       td
                                         input(type="text", name="strength") 
                                       td
@@ -598,17 +607,17 @@ html(lang='en')
                               
                                     tr
                                       td 
-                                        input(type="text", name="busno", value=mandapeta.BusNo, readonly)  
+                                        input(type="text", name="busno", value=mandapeta.BusNo)  
                                       td 
-                                        input(type="text", name="town", value=mandapeta.Town, readonly)  
+                                        input(type="text", name="town", value=mandapeta.Town)  
                                       td
                                         input(type="text", name="route", value=mandapeta.Route) 
                                       td
-                                        input(type="text", name="code", value=mandapeta.Code, readonly)
+                                        input(type="text", name="code", value=mandapeta.Code)
                                       td 
-                                        input(type="text", name="model", value=mandapeta.Model, readonly)  
+                                        input(type="text", name="model", value=mandapeta.Model)  
                                       td
-                                        input(type="text", name="capacity", value=mandapeta.Capacity, readonly) 
+                                        input(type="text", name="capacity", value=mandapeta.Capacity) 
                                       td
                                         input(type="text", name="strength") 
                                       td
@@ -648,17 +657,17 @@ html(lang='en')
                               
                                     tr
                                       td 
-                                        input(type="text", name="busno", value=other.BusNo, readonly)  
+                                        input(type="text", name="busno", value=other.BusNo)  
                                       td 
-                                        input(type="text", name="town", value=other.Town, readonly)  
+                                        input(type="text", name="town", value=other.Town)  
                                       td
                                         input(type="text", name="route", value=other.Route) 
                                       td
-                                        input(type="text", name="code", value=other.Code, readonly)
+                                        input(type="text", name="code", value=other.Code)
                                       td 
-                                        input(type="text", name="model", value=other.Model, readonly)  
+                                        input(type="text", name="model", value=other.Model)  
                                       td
-                                        input(type="text", name="capacity", value=other.Capacity, readonly) 
+                                        input(type="text", name="capacity", value=other.Capacity) 
                                       td
                                         input(type="text", name="strength") 
                                       td
@@ -698,6 +707,7 @@ html(lang='en')
                       table.dataTables-example.report.table.table-striped.table-bordered.table-hover(style="color: #000;")
                         thead
                           tr
+                            th Register No
                             th Bus No
                             th Status
                             th Date 

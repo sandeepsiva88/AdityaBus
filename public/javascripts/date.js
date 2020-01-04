@@ -15,6 +15,7 @@ $(document).ready(function(){
         $.each(JSON.parse(stringified), function(idx, obj) {
         var listtable = $('.report').DataTable();
         listtable.row.add([
+            obj.RegisterNo,
             obj.BusNo,
             obj.Status,
             obj.Date,

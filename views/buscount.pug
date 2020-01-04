@@ -1,0 +1,414 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='description', content='')
+    meta(name='author', content='Dashboard')
+    meta(name='keyword', content='Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina')
+    title Bus Tracking
+    link(type='image/png', href='images/bus1.png', rel='icon')
+    // Bootstrap core CSS
+    link(rel='stylesheet', href='stylesheets/bootstrap.min.css')
+    script(src='javascripts/jquery-1.11.1.min.js')
+    script(src='javascripts/bootstrap.min.js')
+    // external css
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    // Custom styles for this template
+    link(href='stylesheets/style.css', rel='stylesheet')
+    link(href='stylesheets/style-responsive.css', rel='stylesheet')
+    // Data tables CSS
+    link(rel='stylesheet', type='text/css', href='stylesheets/buttons.dataTables.min.css')
+    link(rel='stylesheet', type='text/css', href='stylesheets/jquery.dataTables.min.css')    
+    link(href='stylesheets/dataTables.bootstrap.css', rel='stylesheet')
+    //Date Picker
+    link(href='stylesheets/jquery-ui.css', rel='stylesheet')
+    link(href='stylesheets/date.css', rel='stylesheet')
+    //Page script
+    script(src='javascripts/route.js')
+    style.
+      .header, #sidebar {
+      background: #2C3E50;
+      }
+      span {
+      font-size: 14px;
+      }
+      .file-uploader {
+      background-color: #dbefe9;
+      border-radius: 3px;
+      color: #242424;
+      }
+      .file-uploader__message-area {
+      font-size: 18px;
+      padding: 1em;
+      text-align: center;
+      color: #377a65;
+      }
+      .file-list {
+      background-color: white;
+      font-size: 16px;
+      }
+      .file-list__name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      }
+      .file-list li {
+      height: 50px;
+      line-height: 50px;
+      margin-left: .5em;
+      border: none;
+      overflow: hidden;
+      }
+      .removal-button {
+      width: 20%;
+      border: none;
+      background-color: #d65d38;
+      color: white;
+      }
+      .removal-button::before {
+      content: "X";
+      }
+      .removal-button:focus {
+      outline: 0;
+      }
+      .file-chooser {
+      padding: 1em;
+      transition: background-color 1s, height 1s;
+      }
+      .file-chooser p {
+      font-size: 18px;
+      padding-top: 1em;
+      }
+      .file-uploader {
+      max-width: 400px;
+      height: auto;
+      margin: 2em auto;
+      }
+      .file-uploader * {
+      display: block;
+      }
+      .file-uploader input[type=submit] {
+      margin-top: 2em;
+      float: right;
+      }
+      .file-list {
+      margin: 0 auto;
+      max-width: 90%;
+      }
+      .file-list__name {
+      max-width: 70%;
+      float: left;
+      }
+      .removal-button {
+      display: inline-block;
+      height: 100%;
+      float: right;
+      }
+      .file-chooser {
+      width: 90%;
+      margin: .5em auto;
+      }
+      .file-chooser__input {
+      margin: 0 auto;
+      }
+      .file-uploader__submit-button {
+      width: 100%;
+      border: none;
+      font-size: 1.5em;
+      padding: 1em;
+      background-color: #72bfa7;
+      color: white;
+      }
+      .file-uploader__submit-button:hover {
+      background-color: #a7d7c8;
+      }
+      .file-list li:after, .file-uploader:after {
+      content: "";
+      display: table;
+      clear: both;
+      }
+      .hidden {
+      display: none;
+      }
+      .hidden input {
+      display: none;
+      }
+      .error {
+      background-color: #d65d38;
+      color: white;
+      }
+      *, *::before, *::after {
+      box-sizing: border-box;
+      }
+      ul, li {
+      margin: 0;
+      padding: 0;
+      }
+      .personal_details {
+      background-color: white;
+      border-left:4px solid #fd9f1b;
+      }
+      .personal_details h3 {
+      padding: 10px;
+      }
+      #name {
+      color: #B4886B;
+      font-weight: bold;
+      float: left;
+      margin-left:20px;
+      font-size:15px;
+      }
+      #wd
+      {
+      margin-left: 10px;
+      font-weight: bold;
+      font-family: Arial;
+      }
+      .panel-box {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+      height: 150px;
+      text-align: center;
+      border: medium none;
+      box-shadow: 10px 10px 10px;
+      }
+      .bg-success {
+      background-color: #A3C86D !important;
+      color: #FFF !important;
+      }
+      .bg-warning {
+      background-color: orange !important;
+      color: #FFF !important;
+      }
+      .bg-light {
+      background-color: lightblue !important;
+      color: #FFF !important;
+      }
+      .bg-lightgreen {
+      background-color: lightgreen !important;
+      color: #FFF !important;
+      }
+      .bg-default {
+      background-color: grey !important;
+      color: #FFF !important;
+      }
+      .bg-pink {
+      background-color: pink !important;
+      color: #FFF !important;
+      }
+      .bg-tomato {
+      background-color: tomato !important;
+      color: #FFF !important;
+      }
+      .bg-dodgerblue {
+      background-color: dodgerblue !important;
+      color: #FFF !important;
+      }
+      .bg-violet {
+      background-color: violet !important;
+      color: #FFF !important;
+      }
+      .success-text {
+      color: #82b33a;
+      }
+      .bg-danger {
+      background-color: #FF7857 !important;
+      color: #FFF !important;
+      }
+      .danger-text {
+      color: #d15b3d;
+      }
+      
+      .panel-box .panel-icon {
+      display: table-cell;
+      padding: px;
+      width: 1%;
+      vertical-align: top;
+      border-radius: 0px;
+      text-align: center;
+      }
+      .panel-box .size-h1 {
+      margin-top:7px;
+      }
+      .panel-box .fa {
+      margin-top:9px;
+      }
+      .bg-lovender {
+      background-color: #8075C4 !important;
+      color: #FFF !important;
+      }
+      .lovender-text {
+      color: #6a5fb1;
+      }
+      .tab {
+          overflow: scroll;
+          border: 1px solid #ccc;
+          background-color: skyblue;
+          color:white;
+      }
+      .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          width:100%;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+          border-left:1px solid #ccc;
+      }
+      .tab button:hover {
+          background-color: white;
+          color:skyblue;
+          font-weight:bold;
+      }
+      .tab button:focus {
+          background-color: white;
+          color:skyblue;
+          font-weight:bold;
+      }
+
+      .tab .active button {
+          background-color: white;
+          color:skyblue;
+          font-weight:bold;
+      }
+      .dontshow{
+      display:none;
+      }
+  body
+    section#container
+      // header start
+      header.header.black-bg
+        .sidebar-toggle-box
+          .fa.fa-bars.tooltips(data-placement='right', data-original-title='Toggle Navigation')
+        // logo start
+        a.logo(href='#')
+          b
+            img(src='images/myhub_logo.png',style='height:55px;width:100px;margin-top:-13px')
+        // logo end
+        .top-menu
+          ul.nav.pull-right.top-menu
+            li
+              a.logout(href='logout') Logout
+      // header end
+      // sidebar start
+      aside
+        #sidebar.nav-collapse
+          // sidebar menu start
+          ul#nav-accordion.sidebar-menu
+            p.centered
+              a(href='#')
+                img.img-circle(src='images/bus.png', width='80')
+            h5.centered 
+              p #{user.Town} Bus Count 
+            li.active
+              a(data-toggle='tab', href='#home')
+                i.fa.fa-home
+                span Home
+          // sidebar menu end
+      // sidebar end
+      // main content start
+      section#main-content
+        section.wrapper.site-min-height
+          .row.mt
+            .col-lg-12
+              .tab-content
+                #home.tab-pane.fade.in.active
+                  .container(style='background-color: #eaeaea;width: 100%;height:100%;border-radius: 1px')  
+                    br
+                    br
+                    center
+                      .row
+                        .well
+                          #printDate.date
+                          #printDay.date
+                          #printTime.date
+                    .row 
+                      br   
+                      .col-lg-12
+                        .panel.panel-default
+                          .panel-body
+                            .table-responsive
+                              table#table.dataTables-example.table.table-striped.table-bordered.table-hover
+                                thead
+                                  tr
+                                    th(style="display:none") ID
+                                    th(style="display:none") Time
+                                    th Bus No
+                                    th Strenth
+                                tbody
+                                  each details in data
+                                    tr
+                                      td.id(style="display:none") #{details.Tagid}
+                                      td.time(style="display:none") #{details.Time}
+                                      td.busno #{details.BusNo}
+                                      td
+                                        input.count(type="number", name="count", class="form-control")
+    
+                                    
+                              button.btn.btn-info(type='button', data-toggle='modal', data-target='#myModal') add           
+        #myModal.modal.fade
+          .modal-dialog
+            .modal-content
+              // Modal Header
+              .modal-header
+                h4.modal-title Adding Busdetails
+                button.close(type='button', data-dismiss='modal') ×
+              // Modal body
+              .modal-body
+                form.form-horizontal(action='/Addingbus', method='post')
+                  .form-group
+                    label.control-label.col-md-2 Bus No:
+                    .col-md-6
+                      input.form-control(type='text', name='busno', placeholder='Enter Bus No.', required)
+                  .form-group
+                    label.control-label.col-md-2 count:
+                    .col-md-6
+                      input.form-control(type='text', name='count', required)
+                  .form-group
+                    .col-sm-offset-2.col-sm-10
+                      input.btn.btn-info(type='submit', value='submit')                                           
+    // MAIN CONTENT
+    // main content end
+    // js placed at the end of the document so the pages load faster
+    script(src='javascripts/jquery.js')
+    script(src='javascripts/bootstrap.min.js')
+    script(src='javascripts/jquery-ui-1.9.2.custom.min.js')
+    script(src='javascripts/jquery.ui.touch-punch.min.js')
+    script(src='javascripts/jquery.dcjqaccordion.2.7.js')
+    script(src='javascripts/jquery.scrollTo.min.js')
+    script(src='javascripts/jquery.nicescroll.js')
+    // common script for all pages
+    script(src='javascripts/common-scripts.js')
+    script(src='javascripts/jquery.dataTables.min.js')
+    script(src='javascripts/dataTables.buttons.min.js')
+    script(src='javascripts/buttons.flash.min.js')
+    script(src='javascripts/jszip.min.js')
+    script(src='javascripts/pdfmake.min.js')
+    script(src='javascripts/vfs_fonts.js')
+    script(src='javascripts/buttons.html5.min.js')
+    script(src='javascripts/buttons.print.min.js')
+    script(src='javascripts/date.js')
+    script(src='javascripts/presentdate.js')
+    script(src='javascripts/update.js')
+    script(src='javascripts/delete.js')
+    script(src='javascripts/routeedit.js')
+    script(src='javascripts/buscount.js') 
+    script.
+      $(document).ready(function () {
+      $('.dataTables-example').dataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                title: 'Bus Report'
+            }
+         
+        ],
+        "order": [[ 1, "asc" ]]
+      });
+      });
