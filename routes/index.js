@@ -72,15 +72,15 @@ router.get('/home', function(req,res){
     res.locals.user = req.session.user;
   var date= moment().format('DD-MM-YYYY')
   //console.log(date);
-  var time= moment().format('h:mm:ss')
+  var time= moment().format('HH:mm:ss')
   //console.log(time);
   data.find({"Date":date},function(err,docs){
   test.find({"Date":date}, function(err,docs2){
   route.find({},function(err,docs10){
-    for(i=0;i<=166;i++){
-      var busno=docs10[i].BusNo;
-      route.update({"BusNo":busno},{$set:{"Date":date}})
-    }
+    // for(i=0;i<=166;i++){
+    //   var busno=docs10[i].BusNo;
+    //   route.update({"BusNo":busno},{$set:{"Date":date}})
+    // }
  
   route.find({"Town":"Kakinada"}, function(err,docs3){
   route.find({"Town":"Rajahmundry"}, function(err,docs4){
@@ -357,7 +357,7 @@ router.post('/routeedit', function(req,res){
 
 // taging the bus with tagid
 router.get('/bus/:Tagid',function(req,res){
-  var Time=moment().format("hh:mm:ss a");
+  var Time=moment().format('HH:mm');
     var presentdate=moment().format('DD-MM-YYYY');
     var temp=moment().format('HH:mm');
     var timestamp=presentdate+" "+temp;
@@ -708,12 +708,27 @@ bus.update({"Tagid":dataa[i].Tagid},{$set:{"Tagid":dataa[i].Tagid, "RegisterNo":
 router.get('/BusStrength', function(req,res){
   if(req.session && req.session.user){
   res.locals.user = req.session.user;
-    console.log(req.session.user)
-    var date = moment().format('DD-MM-YYYY');
+    // console.log(req.session.user)
+    var date =moment().format('DD-MM-YYYY');
     // console.log(date)
-    data.find({"Time":{$gte:"08:50:00"},"Date":date,"Status":"IN","Town":req.session.user.Town,"Strength":{$exists: false}},function(err,docs){
+    route.find({"Town":req.session.user.Town}, function(err,docs){
+      var count = docs.length
+      for(var i=0;i<count;i++){
+        // console.log(docs[i].Date)
+        var dated = docs[i].Date
+        // console.log(dated)
+        if(date!=dated){
+          // console.log(i);
+        route.update({"Date":dated,"Town":req.session.user.Town},{$set:{"Strength":"","Date":date}}, function(err,docs1){
+          // console.log(docs1)
+        })          
+        }
+      } 
+    })
+
+    route.find({"Town":req.session.user.Town,"Date":date,"Strength":""},function(err,docs2){
       // console.log(docs.length)
-      res.locals.data = docs;
+      res.locals.data = docs2;
        res.render('buscount');
     });
   }
@@ -721,62 +736,72 @@ router.get('/BusStrength', function(req,res){
 
 // post the count of the bus
 router.post('/buscount', function(req,res){
-  // console.log(req.body)
-  var count = req.body.strength;
-  var bus = req.body.busno;
-  var tag = req.body.TAG;
-  var time = req.body.Intime;
-  var date = moment().format('DD-MM-YYYY');
-  // console.log(bus)
-  // console.log(date)
-  // console.log(tag)
-  data.update({"Tagid":tag,"Date":date,"BusNo":bus,"Status":"IN","Time":time},{$set:{"Strength":count}}, function(err,docs){
-    if(docs){
-      console.log(docs)
-      res.send(docs)
-    }
-    else{
-      console.log("ERR")
-    }
-  });
+   if(req.session && req.session.user){
+  res.locals.user = req.session.user; 
+    // console.log(req.body)
+    var count = req.body.strength;
+    var bus = req.body.busno;
+    var time = req.body.Intime;
+    var date = moment().format('DD-MM-YYYY');
+    console.log(bus)
+    console.log(date)
+    console.log(time)
+    data.update({"Date":date,"BusNo":bus,"Status":"IN","Time":time,"Town":req.session.user.Town},{$set:{"Strength":count}}, function(err,docs){
+      if(docs){
+        console.log(docs)
+        route.update({"Town":req.session.user.Town,"Date":date,"Code":bus,"Intime":time},{$set:{"Strength":count}}, function(err,docs2){
+          console.log(docs2)
+        })
+        res.send(docs)
+      }
+      else{
+        console.log("ERR")
+      }
+    });
+  }
 });
 //Adding a new bus in data collection 
 router.post('/Addingbus', function(req,res){
-  var Time=moment().format("hh:mm:ss a");
-  var bus = req.body.busno;
-  var count = req.body.count;
-      var presentdate=moment().format('DD-MM-YYYY');
-     var temp=moment().format('HH:mm');
-     var timestamp=presentdate+" "+temp;
-       dateTimeParts=timestamp.split(' '),
-       timeParts=dateTimeParts[1].split(':'),
-       dateParts=dateTimeParts[0].split('-');
-     var date = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
-     var datet=date.getTime();
+  if(req.session && req.session.user){
+  res.locals.user = req.session.user; 
+    var Time=moment().format('HH:mm');
+    var bus = req.body.busno;
+    var count = req.body.count;
+    var presentdate=moment().format('DD-MM-YYYY');
+    var temp=moment().format('HH:mm');
+    var timestamp=presentdate+" "+temp;
+     dateTimeParts=timestamp.split(' '),
+     timeParts=dateTimeParts[1].split(':'),
+     dateParts=dateTimeParts[0].split('-');
+    var date = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
+    var datet=date.getTime();
 
-     data.insert({"BusNo":bus,"Strength":count,"Date":presentdate,"Time":Time,"Timestamp":datet,"Status":"IN"}, function(err,docs){
-      if(docs){
-        console.log(docs)
-        res.redirect('/BusStrength')
-      }
-      else{
-        console.log("err")
-      }
-     });
+       data.insert({"BusNo":bus,"Strength":count,"Date":presentdate,"Time":Time,"Timestamp":datet,"Status":"IN","Town":req.session.user.Town}, function(err,docs){
+        if(docs){
+          console.log(docs)
+          res.redirect('/BusStrength')
+        }
+        else{
+          console.log("err")
+        }
+       });
+
+  }  
 });
 
 
-router.get('/route', function(req,res){
-    route.find({}, function(err,doc1) {
-    console.log(doc1.length);
-    for(i=0;i<doc1.length;i++){
-    var code = doc1[i].Code;
-    console.log(code);
-    bus.update({"BusNo":code},{$set:{"Town":doc1[i].Town}},{multi:true},function(err,docs){
-    console.log(docs);
-    });
-    }
-    });
-    res.redirect('/home');
-})
+
+// router.get('/route', function(req,res){
+//     route.find({}, function(err,doc1) {
+//     console.log(doc1.length);
+//     for(i=0;i<doc1.length;i++){
+//     var code = doc1[i].Code;
+//     console.log(code);
+//     bus.update({"BusNo":code},{$set:{"Town":doc1[i].Town}},{multi:true},function(err,docs){
+//     console.log(docs);
+//     });
+//     }
+//     });
+//     res.redirect('/home');
+// })
 module.exports = router;

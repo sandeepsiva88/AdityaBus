@@ -345,11 +345,14 @@ html(lang='en')
                                         td #{data.BusNo}
                                         td #{data.Status}
                                         td #{data.Date}
-                                        -if(data.Time>"9:20:00" && data.Time<="9:59:00"){
-                                          td(style="color:red") #{data.Time}(Late)
+                                        -if(day.Time>"09:20" && day.Time<="09:59" && day.Status=="IN"){
+                                          td(style="color:red") #{day.Time}(Late In)
+                                        -}
+                                        -else if(day.Time>"06:00" && day.Time<="08:30" && day.Status=="IN"){
+                                          td(style="color:green") #{day.Time}(Early In)
                                         -}
                                         -else{
-                                          td #{data.Time}
+                                          td #{day.Time}
                                         -}
                                         td #{data.Reason}
                                         td

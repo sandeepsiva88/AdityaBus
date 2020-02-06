@@ -336,16 +336,14 @@ html(lang='en')
                               table#table.dataTables-example.table.table-striped.table-bordered.table-hover
                                 thead
                                   tr
-                                    th(style="display:none") ID
                                     th(style="display:none") Time
                                     th Bus No
                                     th Strenth
                                 tbody
                                   each details in data
                                     tr
-                                      td.id(style="display:none") #{details.Tagid}
-                                      td.time(style="display:none") #{details.Time}
-                                      td.busno #{details.BusNo}
+                                      td.time(style="display:none") #{details.Intime}
+                                      td.busno #{details.Code}
                                       td
                                         input.count(type="number", name="count", class="form-control")
     

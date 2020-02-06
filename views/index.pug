@@ -412,16 +412,16 @@ html(lang='en')
                                       td #{day.BusNo}
                                       td #{day.Status}
                                       td #{day.Date}
-                                      -if(day.Time>"09:20:00 am" && day.Time<="09:59:00 am" && day.Status=="IN"){
+                                      -if(day.Time>"09:20" && day.Time<="09:59" && day.Status=="IN"){
                                         td(style="color:red") #{day.Time}(Late In)
                                       -}
-                                      -else if(day.Time>"06:00:00 am" && day.Time<="08:30:00 am" && day.Status=="IN"){
+                                      -else if(day.Time>"06:00" && day.Time<="08:30" && day.Status=="IN"){
                                         td(style="color:green") #{day.Time}(Early In)
                                       -}
-                                      -else if(day.Time>="09:30:00 am" && day.Time<="04:30:00 pm" && day.Status=="OUT"){
-                                        td(style="color:yellow") #{day.Time}(Early Out)
+                                      -else if(day.Time>="09:30" && day.Time<="16:30" && day.Status=="OUT"){
+                                        td(style="color:orange") #{day.Time}(Early Out)
                                       -}
-                                      -else if(day.Time>="05:00:00 pm" && day.Time<="07:00:00 pm" && day.Status=="OUT"){
+                                      -else if(day.Time>="17:00" && day.Time<="19:00" && day.Status=="OUT"){
                                         td(style="color:blue") #{day.Time}(Late Out)
                                       -}
                                       -else{
@@ -520,7 +520,7 @@ html(lang='en')
                                       td
                                         input(type="text", name="capacity", value=kakinada.Capacity)
                                       td
-                                        input(type="text", name="strength") 
+                                        input(type="text", name="strength", value=kakinada.Strength) 
                                       td
                                         input(type="text", name="standing")
                                       td

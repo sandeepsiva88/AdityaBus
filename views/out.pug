@@ -341,7 +341,15 @@ html(lang='en')
                                         td #{data.BusNo}
                                         td #{data.Status}
                                         td #{data.Date}
-                                        td #{data.Time}
+                                        -if(day.Time>="09:30" && day.Time<="16:30" && day.Status=="OUT"){
+                                          td(style="color:orange") #{day.Time}(Early Out)
+                                        -}
+                                        -else if(day.Time>="17:00" && day.Time<="19:00" && day.Status=="OUT"){
+                                          td(style="color:blue") #{day.Time}(Late Out)
+                                        -}
+                                        -else{
+                                          td #{day.Time}
+                                        -}
     // MAIN CONTENT
     // main content end
     // js placed at the end of the document so the pages load faster
