@@ -341,14 +341,14 @@ html(lang='en')
                                         td #{data.BusNo}
                                         td #{data.Status}
                                         td #{data.Date}
-                                        -if(day.Time>="09:30" && day.Time<="16:30" && day.Status=="OUT"){
-                                          td(style="color:orange") #{day.Time}(Early Out)
+                                        -if(data.Time>="09:30" && data.Time<="16:30" && data.Status=="OUT"){
+                                          td(style="color:orange") #{data.Time}(Early Out)
                                         -}
-                                        -else if(day.Time>="17:00" && day.Time<="19:00" && day.Status=="OUT"){
-                                          td(style="color:blue") #{day.Time}(Late Out)
+                                        -else if(data.Time>="17:00" && data.Time<="19:00" && data.Status=="OUT"){
+                                          td(style="color:blue") #{data.Time}(Late Out)
                                         -}
                                         -else{
-                                          td #{day.Time}
+                                          td #{data.Time}
                                         -}
     // MAIN CONTENT
     // main content end
